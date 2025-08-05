@@ -1,7 +1,9 @@
 {
   "owner": "1142053791781355561",
-  "token": "put you bot token here",
+  "token": "token",
   "embedColor": "#0099ff",
-  "allowedChannel": "1393807816937963636",
-  "autoRemoveApiKeys": false
+  "allowedChannel": "1401998228013973557",
+    "status": "online",
+  "activity": "Apikey Create",
+  "autoRemoveApiKeys": true
 }
