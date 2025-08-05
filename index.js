@@ -188,6 +188,10 @@ app.get('/generated/:imageId.png', (req, res) => {
 client.once('ready', async () => {
   console.log(`Bot logged in as ${client.user.tag}`);
 
+  // Set bot status and activity
+client.user.setStatus(config.status);
+client.user.setActivity(config.activity);
+
   // Register slash commands
   const commands = [
     new SlashCommandBuilder()
@@ -247,6 +251,11 @@ client.once('ready', async () => {
               .setDescription('Enable or disable auto-removal')
               .setRequired(true)
           )
+      )
+      .addSubcommand(subcommand =>
+        subcommand
+          .setName('show')
+          .setDescription('Show your own API keys')
       )
   ];
 
@@ -512,6 +521,35 @@ client.on('interactionCreate', async (interaction) => {
             name: 'Info',
             value: enabled ? 'API keys will be automatically removed when users leave the server.' : 'API keys will not be automatically removed.',
             inline: false
+          });
+
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+        break;
+
+      case 'show':
+        // Check if command is used in allowed channel
+        if (config.allowedChannel && interaction.channelId !== config.allowedChannel) {
+          embed.setTitle('❌ Command Not Allowed Here')
+            .setDescription('This command can only be used in the designated channel.');
+          return interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+
+        if (!apiKeys[userId] || apiKeys[userId].keys.length === 0) {
+          embed.setTitle('🔑 Your API Keys')
+            .setDescription('You don\'t have any API keys yet. Use `/apikey generate` to create one.');
+          return interaction.reply({ embeds: [embed], ephemeral: true });
+        }
+
+        const userKeys = apiKeys[userId].keys.map((keyData, index) => 
+          `**${index + 1}.** \`${keyData.key}\`\nCreated: ${new Date(keyData.createdAt).toLocaleString()}`
+        ).join('\n\n');
+
+        embed.setTitle('🔑 Your API Keys')
+          .setDescription(userKeys)
+          .addFields({
+            name: 'Total Keys',
+            value: `${apiKeys[userId].keys.length}/3`,
+            inline: true
           });
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
