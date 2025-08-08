@@ -10,7 +10,7 @@ const client = new Client({
 });
 
 // Initialize Express app
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "AIzaSyDYrzBFmFiD39OrARGPKaDhqv9XsUaxlWw");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "Gemini Apikey Here");
 const app = express();
 
 // API Configuration
