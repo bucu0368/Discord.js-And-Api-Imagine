@@ -15,7 +15,7 @@ const app = express();
 
 // API Configuration
 const VALID_API_KEY = process.env.API_KEY || "bucu";
-const port = process.env.PORT || "5000";
+const port = process.env.PORT || "6207";
 
 // API keys storage for Discord bot
 const apiKeysFile = 'apikeys.json';
